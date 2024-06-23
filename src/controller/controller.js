@@ -27,3 +27,62 @@ export const getproduct = async (req, res) => {
 }
 }
 
+export const createProduct= ( async (req, res) => {
+    const { productThumbnail, productTitle, productDescription, productCost, onOffer } = req.body;
+    try {
+        const result = await pool.query(
+            "INSERT INTO products (productthumbnail, producttitle, productdescription, productcost, onoffer) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+            [, productTitle, productDescription, productCost, onOffer]
+        );
+        res.status(201).json(result.rows[0]);
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+export const updateProduct = (async (req, res) => {
+    const id = req.params.id;
+    const { productthumbnail, producttitle, productdescription, productcost, onoffer } = req
+    try{
+        let updateproducts;
+        if (productthumbnail) {
+          updateproduct = await pool.query(
+            "update products SET productthumbnail=$1 where id=$2",
+            [productthumbnail, product_id],
+          );
+        }
+        if(producttitle){
+          updateproducts = await pool.query("update products set producttitle=$1 where id=$2",
+          
+          [producttitle, product_id],
+          );
+        }
+        if (productdescription){
+          updateproducts = await pool.query("update products set productdescription=$1 where id =$2",
+            [productdescription, product_id],
+          );
+        }
+        if(productcost){
+          updateproducts = await pool.query("update products set productcost=$1 where id =$2",
+            [productcost, product_id],
+          );
+        }
+        if(onoffer){
+          updateproducts = await pool.query("update products set onoffer=$1 where id=$2",
+            [onoffer,product_id],
+          );
+        }
+        if (updateproducts.rowCount === 1){
+          res.status(200).json({success:true, message:"product updated successfully"});
+          console.log("successful update");
+
+        }else{
+          res.status(404).json({success:false, message:"invalid entry please try again"})
+          console.log("errors");
+        }
+      }catch(err){
+        res.status(500).json({success:false,message:err.message});
+      }
+    }
+
+)
