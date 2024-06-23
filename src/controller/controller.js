@@ -86,3 +86,23 @@ export const updateProduct = (async (req, res) => {
     }
 
 )
+
+
+export const deleteProduct = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const deleteproduct = await pool.query("DELETE FROM products WHERE id = $1", [id]);
+
+        if (deleteproduct.rowCount === 1) {
+            res.status(200).json({ success: true, message: "Product deleted successfully" });
+            console.log("Successful delete");
+        } else {
+            res.status(404).json({ success: false, message: "Product not found" });
+            console.log("Product not found");
+        }
+    } catch (error) {
+        console.error('Error deleting product:', error.message);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+
