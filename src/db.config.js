@@ -1,5 +1,5 @@
-import pkg from 'pg'
-const {Pool} = pkg;
+import pkg from 'pg';
+const { Pool } = pkg;
 
 const pool = new Pool({
     user: 'postgres',
@@ -7,6 +7,6 @@ const pool = new Pool({
     database: 'ProductsDB',
     password: '1234',
     port: 5432,
-})
+});
 
 export default pool;
